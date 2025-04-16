@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Register</title>
+    </head>
+    <body>
+        <h2>Register</h2>
+        <form method="POST">
+            <label>Username:</label><br>
+            <input type="text" name="username" required><br><br>
+    
+            <label>Email:</label><br>
+            <input type="email" name="email" required><br><br>
+    
+            <label>Password:</label><br>
+            <input type="password" name="password" required><br><br>
+    
+            <label>Role:</label><br>
+            <select name="role" required>
+                <option value="patient">Patient</option>
+                <option value="doctor">Doctor</option>
+            </select><br><br>
+    
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+    </body>
+    </html>
+    
+
+</body>
+</html>
