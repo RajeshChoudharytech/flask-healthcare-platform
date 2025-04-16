@@ -6,21 +6,31 @@
     <title>Document</title>
 </head>
 <body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
     <h2>Book Appointment with Dr. {{ doctor.username }}</h2>
 
 <form method="POST">
     {{ form.hidden_tag() }}
 
-    <div class="form-group">
+    <div>
         {{ form.appointment_time.label }}<br>
-        {{ form.appointment_time(class="form-control") }}
+        {{ form.appointment_time(size=32) }}
     </div>
 
-    <div class="form-group">
-        {{ form.submit(class="btn btn-primary") }}
+    <div>
+        {{ form.submit() }}
     </div>
 </form>
-
 
 
 </body>

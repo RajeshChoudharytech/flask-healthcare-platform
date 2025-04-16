@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2 class="mb-3">Manage Availability</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.date.label }} {{ form.date(class="form-control") }}
+    {{ form.start_time.label }} {{ form.start_time(class="form-control") }}
+    {{ form.end_time.label }} {{ form.end_time(class="form-control") }}
+    {{ form.submit(class="btn btn-primary mt-2") }}
+</form>
+
+<h3 class="mt-4">Your Availability</h3>
+<ul class="list-group mt-2">
+    {% for slot in availabilities %}
+        <li class="list-group-item">
+            {{ slot.date.strftime('%Y-%m-%d') }}: {{ slot.start_time }} - {{ slot.end_time }}
+        </li>
+    {% else %}
+        <li class="list-group-item">No availability set yet.</li>
+    {% endfor %}
+</ul>
+
+    
+</body>
+</html>
+
