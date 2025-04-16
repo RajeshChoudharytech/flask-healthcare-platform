@@ -20,8 +20,12 @@ def create_app():
     migrate.init_app(app, db)
     
     from app.auth.routes import auth_bp
+    from app.doctor.routes import doctor_bp
 
     app.register_blueprint(auth_bp)
+    app.register_blueprint(doctor_bp)
+
+
     return app
 
 

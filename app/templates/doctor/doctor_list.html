@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors</title>
+</head>
+<body>
+    
+    <h2>Available Doctors</h2>
+<ul>
+  {% for doctor in doctors %}
+    <li>
+      <a href="{{ url_for('doctor.doctor_profile', doctor_id=doctor.id) }}">
+        Dr. {{ doctor.username }} - {{ doctor.doctor_profile.specialty if doctor.doctor_profile }}
+      </a>
+    </li>
+  {% endfor %}
+</ul>
+
+</body>
+</html>

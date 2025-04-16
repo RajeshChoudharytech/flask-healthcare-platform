@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor profile</title>
+</head>
+<body>
+    <h2>Dr. {{ doctor.username }}</h2>
+<p><strong>Specialty:</strong> {{ doctor.doctor_profile.specialty }}</p>
+<p><strong>Email:</strong> {{ doctor.email }}</p>
+<p><strong>Bio:</strong></p>
+<p>{{ doctor.doctor_profile.bio }}</p>
+
+</body>
+</html>
