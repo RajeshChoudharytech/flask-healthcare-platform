@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, abort, flash, redirect, url_for
 from flask_login import login_required, current_user
 from app.models import UserRole, User
-from app.models import Appointment, AppointmentStatus
+from app.models import Appointment, AppointmentStatus, Availability
 from app import db
 from app.utils.email import send_email
-
+from app.forms import AvailabilityForm
 
 
 doctor_bp = Blueprint('doctor', __name__)
@@ -87,3 +87,37 @@ def handle_appointment(appointment_id, action):
     )
     flash(f'Appointment {action}ed.', 'info')
     return redirect(url_for('doctor.view_appointments'))
+
+
+@doctor_bp.route('/doctor/availability', methods=['GET', 'POST'])
+@login_required
+def manage_availability():
+    """
+    Allows a doctor to manage their availability for appointments.
+
+    GET:
+        Displays a form for the doctor to add new availability slots and lists all 
+        existing availability slots for the doctor.
+
+    POST:
+        When the form is submitted, validates the input, creates a new availability 
+        entry for the doctor, and saves it to the database.
+    """
+    if current_user.role != UserRole.doctor:
+        abort(403)
+
+    form = AvailabilityForm()
+    if form.validate_on_submit():
+        availability = Availability(
+            doctor_id=current_user.id,
+            date=form.date.data,
+            start_time=form.start_time.data,
+            end_time=form.end_time.data
+        )
+        db.session.add(availability)
+        db.session.commit()
+        flash('Availability added successfully.', 'success')
+        return redirect(url_for('doctor.manage_availability'))
+
+    availabilities = Availability.query.filter_by(doctor_id=current_user.id).order_by(Availability.date.desc()).all()
+    return render_template('doctor/availability.html', form=form, availabilities=availabilities)

@@ -92,3 +92,23 @@ class Appointment(db.Model):
 
     patient = db.relationship('User', foreign_keys=[patient_id], backref='patient_appointments')
     doctor = db.relationship('User', foreign_keys=[doctor_id], backref='doctor_appointments')
+
+
+class Availability(db.Model):
+    """
+    Represents a doctor's availability for appointments on a given date.
+
+    Attributes:
+        id (int): Primary key.
+        doctor_id (int): Foreign key referencing the User table (must be a doctor).
+        date (date): The specific date the doctor is available.
+        start_time (time): The start time of the availability window.
+        end_time (time): The end time of the availability window.
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+
+    doctor = db.relationship('User', backref='availabilities')
