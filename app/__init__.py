@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import login_user
@@ -21,10 +21,16 @@ def create_app():
     
     from app.auth.routes import auth_bp
     from app.doctor.routes import doctor_bp
+    from app.patient.routes import patient_bp
+    
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(doctor_bp)
-
+    app.register_blueprint(patient_bp)
+    
+    @app.context_processor
+    def inject_user():
+        return dict(current_user=current_user)
 
     return app
 

@@ -7,10 +7,15 @@
 </head>
 <body>
     <h2>Dr. {{ doctor.username }}</h2>
-<p><strong>Specialty:</strong> {{ doctor.doctor_profile.specialty }}</p>
-<p><strong>Email:</strong> {{ doctor.email }}</p>
-<p><strong>Bio:</strong></p>
-<p>{{ doctor.doctor_profile.bio }}</p>
+
+    {% if doctor.profile %}
+        <p><strong>Specialty:</strong> {{ doctor.profile.specialty }}</p>
+        <p><strong>Bio:</strong> {{ doctor.profile.bio }}</p>
+    {% endif %}
+
+    {% if current_user.role.value == 'patient' %}
+        <a href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=doctor.id) }}">Book Appointment</a>
+    {% endif %}
 
 </body>
 </html>

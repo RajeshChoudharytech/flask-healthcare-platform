@@ -1,0 +1,13 @@
+<h2>My Appointments</h2>
+{% for appt in appointments %}
+    <div>
+        <strong>Patient:</strong> {{ appt.patient.username }}<br>
+        <strong>Time:</strong> {{ appt.appointment_time }}<br>
+        <strong>Status:</strong> {{ appt.status.value }}<br>
+        {% if appt.status.value == 'Pending' %}
+            <a href="{{ url_for('doctor.handle_appointment', appointment_id=appt.id, action='accept') }}">Accept</a> |
+            <a href="{{ url_for('doctor.handle_appointment', appointment_id=appt.id, action='reject') }}">Reject</a>
+        {% endif %}
+        <hr>
+    </div>
+{% endfor %}
