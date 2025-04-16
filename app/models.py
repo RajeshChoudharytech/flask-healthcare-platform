@@ -2,6 +2,8 @@ from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import enum
+from datetime import datetime
+
 
 class UserRole(enum.Enum):
     """
@@ -10,6 +12,7 @@ class UserRole(enum.Enum):
     """
     patient = "patient"
     doctor = "doctor"
+
 
 class User(UserMixin, db.Model):
     """
@@ -53,3 +56,39 @@ class DoctorProfile(db.Model):
     specialty = db.Column(db.String(100))
 
     user = db.relationship("User", back_populates="doctor_profile")
+
+
+class AppointmentStatus(enum.Enum):
+    """
+    Enum representing the status of an appointment.
+
+    - 'Pending': The appointment is still waiting for confirmation.
+    - 'Accepted': The appointment has been confirmed by the doctor.
+    - 'Rejected': The appointment has been rejected by the doctor.
+    """
+    pending = "Pending"
+    accepted = "Accepted"
+    rejected = "Rejected"
+
+
+class Appointment(db.Model):
+    """
+    Model representing an appointment between a patient and a doctor.
+
+    Attributes:
+        id (int): The unique identifier for the appointment.
+        patient_id (int): The ID of the patient who booked the appointment.
+        doctor_id (int): The ID of the doctor who will attend the appointment.
+        appointment_time (datetime): The scheduled date and time of the appointment.
+        status (str): The current status of the appointment (Pending, Accepted, Rejected).
+        created_at (datetime): The timestamp when the appointment was created.
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    appointment_time = db.Column(db.DateTime, nullable=False)
+    status = db.Column(db.Enum(AppointmentStatus), default=AppointmentStatus.pending)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    patient = db.relationship('User', foreign_keys=[patient_id], backref='patient_appointments')
+    doctor = db.relationship('User', foreign_keys=[doctor_id], backref='doctor_appointments')
