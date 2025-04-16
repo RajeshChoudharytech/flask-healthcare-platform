@@ -5,6 +5,9 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import login_user
 
+from flask_mail import Mail
+
+mail = Mail()
 db = SQLAlchemy()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
@@ -18,6 +21,7 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
+    mail.init_app(app)
     
     from app.auth.routes import auth_bp
     from app.doctor.routes import doctor_bp

@@ -3,6 +3,9 @@ from flask_login import login_required, current_user
 from app.models import UserRole, User
 from app.models import Appointment, AppointmentStatus
 from app import db
+from app.utils.email import send_email
+
+
 
 doctor_bp = Blueprint('doctor', __name__)
 
@@ -74,5 +77,13 @@ def handle_appointment(appointment_id, action):
         appointment.status = AppointmentStatus.rejected
 
     db.session.commit()
+    
+    status_msg = 'accepted' if appointment.status == AppointmentStatus.accepted else 'rejected'
+
+    send_email(
+        subject=f'Appointment {status_msg.title()}',
+        recipients=[appointment.patient.email],
+        body=f'Your appointment with Dr. {appointment.doctor.username} on {appointment.appointment_time} has been {status_msg}.'
+    )
     flash(f'Appointment {action}ed.', 'info')
     return redirect(url_for('doctor.view_appointments'))

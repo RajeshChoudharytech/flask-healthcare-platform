@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from flask_login import login_required, current_user
 from app.models import UserRole, User
+from app.utils.email import send_email
 
 from app.forms import AppointmentForm
-from app.models import Appointment, AppointmentStatus
+from app.models import Appointment
 
 from app import db
 
@@ -30,6 +31,12 @@ def book_appointment_with_doctor(doctor_id):
         )
         db.session.add(appointment)
         db.session.commit()
+        send_email(
+        subject='New Appointment Request',
+        recipients=[doctor.email],
+        body=f'You have a new appointment request from {current_user.username} on {form.appointment_time.data}.'
+    )
+        
         flash('Appointment requested successfully!', 'success')
         return redirect(url_for('doctor.doctor_list'))
 
