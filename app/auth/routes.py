@@ -59,10 +59,7 @@ def login():
             login_user(user)
             flash('Logged in successfully.', 'success')
 
-            if user.role == UserRole.doctor:
-                return redirect(url_for('doctor.dashboard'))
-            elif user.role == UserRole.patient:
-                return redirect(url_for('doctor.doctor_list'))
+            return redirect(url_for('auth.home'))
         flash('Invalid credentials.', 'danger')
 
     return render_template('auth/login.html')

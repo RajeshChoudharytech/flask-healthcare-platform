@@ -44,7 +44,7 @@
 								<span></span>
 							</span>
 						</a>
-						<a href="index-2.html" class="navbar-brand logo">
+						<a href="{{url_for('auth.home')}}" class="navbar-brand logo">
 							<img src="{{ url_for('static', filename='assets/img/logo.png') }}" class="img-fluid" alt="Logo">
 						</a>
 					</div>
@@ -57,10 +57,12 @@
 								<i class="fas fa-times"></i>
 							</a>
 						</div>
+						{% if current_user.is_authenticated %}
 						<ul class="main-nav">
 							<li class="active">
-								<a href="index-2.html">Home</a>
+								<a href="{{url_for('auth.home')}}">Home</a>
 							</li>
+							{% if current_user.role.value == 'doctor' %}
 							<li class="has-submenu">
 								<a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
@@ -70,28 +72,22 @@
 									<li><a href="my-patients.html">Patients List</a></li>
 									<li><a href="doctor-profile-settings.html">Profile Settings</a></li>
 								</ul>
-							</li>	
+							</li>
+							{% else %}
 							<li class="has-submenu">
 								<a href="#">Patients <i class="fas fa-chevron-down"></i></a>
 								<ul class="submenu">
 									<li><a href="search.html">Search Doctor</a></li>
 									<li><a href="doctor-profile.html">Doctor Profile</a></li>
-									<li><a href="booking.html">Booking</a></li>
+									<li><a href="booking.html">My Booking</a></li>
 								</ul>
 							</li>	
-							<li class="has-submenu">
-								<a href="#">Pages <i class="fas fa-chevron-down"></i></a>
-								<ul class="submenu">
-				
-									<li><a href="login.html">Login</a></li>
-									<li><a href="register.html">Register</a></li>
-									<li><a href="forgot-password.html">Forgot Password</a></li>
-								</ul>
-							</li>
+							{% endif %}
 							<li class="login-link">
 								<a href="login.html">Login / Signup</a>
 							</li>
-						</ul>		 
+						</ul>
+						{% endif %}		 
 					</div>		 
 					<ul class="nav header-navbar-rht">
 						<li class="nav-item contact-item">
@@ -103,9 +99,11 @@
 								<p class="contact-info-header"> +1 315 369 5943</p>
 							</div>
 						</li>
+						{% if not current_user.is_authenticated %}
 						<li class="nav-item">
 							<a class="nav-link header-login" href="login.html">login / Signup </a>
 						</li>
+						{% 	endif %}
 					</ul>
 				</nav>
 			</header>
