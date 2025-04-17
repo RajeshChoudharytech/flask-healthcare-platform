@@ -80,3 +80,9 @@ def logout():
     logout_user()
     flash('Logged out successfully!', 'info')
     return redirect(url_for('auth.login'))
+
+
+
+@auth_bp.route('/')
+def home():
+    return render_template('dash/index-2.html')
