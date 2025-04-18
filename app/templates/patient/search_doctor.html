@@ -44,7 +44,7 @@
                                 </ul>
                             </div>
                             <div class="clinic-booking mt-2">
-                                <a class="view-pro-btn" href="#">View Profile</a>
+                                <a class="view-pro-btn" href="{{ url_for('doctor.doctor_profile', slug=doctor.doctor_profile.slug) }}">View Profile</a>
                                 <a class="apt-btn" href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=doctor.id) }}">Book Appointment</a>
                             </div>
                         </div>

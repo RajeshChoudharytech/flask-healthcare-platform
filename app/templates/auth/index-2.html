@@ -137,7 +137,7 @@
 					  </ul>
 					  <div class="row row-sm">
 						<div class="col-6">
-						  <a href="#" class="btn view-btn">View Profile</a>
+						  <a href="{{ url_for('doctor.doctor_profile', slug=profile.slug) }}" class="btn view-btn">View Profile</a>
 						</div>
 						<div class="col-6">
 						  <a href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=profile.id) }}" class="btn book-btn">Book Now</a>

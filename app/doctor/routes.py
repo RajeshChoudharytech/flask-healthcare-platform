@@ -94,15 +94,19 @@ def doctor_list():
     return render_template("doctor/doctor_list.html", doctors=doctors)
 
 
-@doctor_bp.route("/doctors/<int:doctor_id>")
-def doctor_profile(doctor_id):
+@doctor_bp.route("/doctors/<slug>")
+@login_required
+def doctor_profile(slug):
     """
-    Displays a specific doctor's profile. It retrieves the doctor using the provided doctor_id.
-    If the doctor is not found or is not a doctor, it aborts with a 404 error.
+    Displays a specific doctor's profile using the unique slug.
+    If not found or user is not a doctor, returns 404.
     """
-    doctor = User.query.get_or_404(doctor_id)
+    profile = DoctorProfile.query.filter_by(slug=slug).first_or_404()
+    doctor = profile.user
+
     if doctor.role != UserRole.doctor:
         abort(404)
+
     return render_template("doctor/doctor_profile.html", doctor=doctor)
 
 
