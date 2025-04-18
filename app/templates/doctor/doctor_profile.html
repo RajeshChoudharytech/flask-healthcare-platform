@@ -1,21 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor profile</title>
-</head>
-<body>
-    <h2>Dr. {{ doctor.username }}</h2>
+{% extends "base.html" %}
+{% block title %}Doctor Profile{% endblock %}
 
-    {% if doctor.profile %}
-        <p><strong>Specialty:</strong> {{ doctor.profile.specialty }}</p>
-        <p><strong>Bio:</strong> {{ doctor.profile.bio }}</p>
-    {% endif %}
+{% block content %}
+{% include "message.html" %}
 
-    {% if current_user.role.value == 'patient' %}
-        <a href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=doctor.id) }}">Book Appointment</a>
-    {% endif %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title mb-3">Dr. {{ doctor.username }}</h2>
 
-</body>
-</html>
+            {% if doctor.doctor_profile %}
+                <p><strong>Specialty:</strong> {{ doctor.doctor_profile.specialty }}</p>
+                <p><strong>Bio:</strong> {{ doctor.doctor_profile.bio }}</p>
+            {% else %}
+                <p>No profile information available.</p>
+            {% endif %}
+
+            {% if current_user.role.value == 'patient' %}
+                <a href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=doctor.id) }}" class="btn btn-primary mt-3">
+                    Book Appointment
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

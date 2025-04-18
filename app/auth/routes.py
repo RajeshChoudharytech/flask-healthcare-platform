@@ -1,14 +1,11 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user
 from app import db
-from app.models import User, UserRole
+from app.models import User, DoctorProfile
 from flask import Blueprint
-from werkzeug.security import check_password_hash
-
 
 auth_bp = Blueprint('auth', __name__)
 
-# Registration route
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     """
@@ -39,8 +36,6 @@ def register():
     return render_template('auth/register.html')
 
 
-# Login route
-
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """
@@ -59,16 +54,12 @@ def login():
             login_user(user)
             flash('Logged in successfully.', 'success')
 
-            if user.role == UserRole.doctor:
-                return redirect(url_for('doctor.dashboard'))
-            elif user.role == UserRole.patient:
-                return redirect(url_for('doctor.doctor_list'))
+            return redirect(url_for('auth.home'))
         flash('Invalid credentials.', 'danger')
 
     return render_template('auth/login.html')
 
 
-# Logout route
 @auth_bp.route('/logout')
 @login_required
 def logout():
@@ -80,3 +71,11 @@ def logout():
     logout_user()
     flash('Logged out successfully!', 'info')
     return redirect(url_for('auth.login'))
+
+
+@auth_bp.route('/')
+def home():
+    doctors = (
+        DoctorProfile.query.all()
+    )
+    return render_template('auth/index-2.html', doctors=doctors)
