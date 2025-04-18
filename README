@@ -1,0 +1,67 @@
+# Flask Healthcare Platform
+
+A full-featured healthcare appointment booking system built with **Flask**, **SQLAlchemy**, **Sqlite**.
+
+## ⚙️ Setup Instructions
+
+### 1. Clone the repository
+
+   ```bash
+   git clone https://github.com/RajeshChoudharytech/flask-healthcare-platform.git
+   cd flask-healthcare-platform
+   ```
+### 2. Create a virtual environment and install dependencies:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   pip install -r requirements.txt
+   ```
+### 3. Set up environment variables
+
+    SECRET_KEY=2a313cc7ef8tfgy2bd4567tyuhygfrtytguc03bbbe654dcde189bebc
+    DATABASE_URL=sqlite:///new.db
+    MAIL_USERNAME=test@gmail.com
+    MAIL_PASSWORD=cdbs sbdh sbdh sdhd
+    MAIL_DEFAULT_SENDER=test@gmail.com
+
+
+### 4. Apply database migrations:
+
+   ```bash
+   flask db upgrade
+   ```
+### 5. Run the development server:
+
+   ```bash
+   flask run --reload
+   ```
+
+### 6. Access the application at:
+
+   ```bash
+   http://localhost:5000
+   ```
+
+## 👤 Roles
+
+- **Doctor**: Can set availability, view booked appointments, and manage schedule.
+- **Patient**: Can browse doctors, book appointments, and view history.
+
+## 🧩 Features
+
+- User Authentication (Login/Register)
+- Role-based access (Doctor/Patient)
+- Doctor availability scheduling
+- Appointment booking with time validation
+- Email notifications
+
+
+
+## 🙏 Credits
+
+Developed by [Rajesh Choudhary](https://github.com/RajeshChoudharytech)
+
+---
+
+This project is for educational purposes and can be extended as per your needs.
