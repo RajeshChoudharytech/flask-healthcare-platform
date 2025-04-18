@@ -49,10 +49,10 @@
                             <span></span><span></span><span></span>
                         </span>
                     </a>
-                    <a href="{{ url_for('auth.home') }}" class="navbar-brand logo">
-                        <img src="{{ url_for('static', filename='assets/img/logo.png') }}" class="img-fluid" alt="Logo">
+                    <a href="{{ url_for('auth.home') }}" class="navbar-brand logo text-primary fw-bold" style="font-size: 1.5rem;">
+                        PrimeCare
                     </a>
-                </div>
+                </div>                
                 <div class="main-menu-wrapper">
                     <div class="menu-header">
                         <a href="{{ url_for('auth.home') }}" class="menu-logo">
@@ -82,7 +82,8 @@
                         <li class="has-submenu">
                             <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
                             <ul class="submenu">
-                                <li><a href="{{ url_for('patient.search_doctor') }}">Search Doctor</a></li>
+                                <li><a href="{{ url_for('patient.my_appointments') }}">My Appointments</a></li>
+                                <li><a href="{{ url_for('doctor.doctor_list') }}">All Doctors</a></li>
                             </ul>
                         </li>
                         {% endif %}

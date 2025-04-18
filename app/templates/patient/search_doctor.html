@@ -2,11 +2,14 @@
 {% block title %}Search Doctor{% endblock %}
 
 {% block content %}
+{% include "message.html" %}
+
 <div class="container mt-4">
     <h3>Search Results{% if query %} for "{{ query }}"{% endif %}</h3>
 
     {% if doctors %}
         {% for doctor in doctors %}
+            {% if doctor.doctor_profile %}
             <!-- Doctor Widget -->
             <div class="card mb-3">
                 <div class="card-body">
@@ -22,11 +25,13 @@
                                 <h4 class="doc-name">
                                     <a href="#">{{ doctor.username }}</a>
                                 </h4>
-                                <p class="doc-speciality">
+                                <p class="doc-speciality"> Specialty: 
+                                    
                                     {{ doctor.doctor_profile.specialty if doctor.doctor_profile else "N/A" }}
                                 </p>
                                 <div class="clinic-details">
-                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{ doctor.doctor_profile.location if doctor.doctor_profile else "N/A" }}</p>
+                                    
+                                    <p class="doc-location"> Bio: <i></i> {{ doctor.doctor_profile.bio if doctor.doctor_profile else "N/A" }}</p>
                                 </div>
                             </div>
                         </div>
@@ -46,6 +51,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <!-- /Doctor Widget -->
         {% endfor %}
     {% else %}

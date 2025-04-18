@@ -3,13 +3,14 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+{% include "message.html" %}
 
 <section class="section section-search">
 	<div class="container-fluid">
 		<div class="banner-wrapper">
 			<div class="banner-header text-center">
-				<h1>Search Doctor, Make an Appointment</h1>
-				<p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
+				<h1>Find Trusted Doctors, Book Appointments Instantly</h1>
+				<p>Your health is our priority. Browse top-rated doctors and book appointments at your convenience — all in one place.</p>
 			</div>
 			 
 			<!-- Search -->
@@ -29,19 +30,20 @@
 		</div>
 	</div>
 </section>
+
 <!-- Clinic and Specialities -->
 <section class="section section-specialities">
 	<div class="container-fluid">
 		<div class="section-header text-center">
 			<h2>Clinic and Specialities</h2>
-			<p class="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+			<p class="sub-title">Explore our wide range of medical specialties and find the right expert for your health needs. From general physicians to specialists, we’ve got you covered.</p>
 		</div>
 		<div class="row justify-content-center">
 			<div class="col-md-9">
 				<!-- Slider -->
 				<div class="specialities-slider slider">
 				
-					<!-- Slider Item -->
+					<!-- Slider Items (unchanged) -->
 					<div class="speicality-item text-center">
 						<div class="speicality-img">
 							<img src="{{ url_for('static', filename='assets/img/specialities/specialities-01.png')}}" class="img-fluid" alt="Speciality">
@@ -49,9 +51,7 @@
 						</div>
 						<p>Urology</p>
 					</div>	
-					<!-- /Slider Item -->
 					
-					<!-- Slider Item -->
 					<div class="speicality-item text-center">
 						<div class="speicality-img">
 							<img src="{{ url_for('static', filename='assets/img/specialities/specialities-02.png')}}" class="img-fluid" alt="Speciality">
@@ -59,9 +59,7 @@
 						</div>
 						<p>Neurology</p>	
 					</div>							
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
+
 					<div class="speicality-item text-center">
 						<div class="speicality-img">
 							<img src="{{ url_for('static', filename='assets/img/specialities/specialities-03.png')}}" class="img-fluid" alt="Speciality">
@@ -69,9 +67,7 @@
 						</div>	
 						<p>Orthopedic</p>	
 					</div>							
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
+
 					<div class="speicality-item text-center">
 						<div class="speicality-img">
 							<img src="{{ url_for('static', filename='assets/img/specialities/specialities-04.png')}}" class="img-fluid" alt="Speciality">
@@ -79,9 +75,7 @@
 						</div>	
 						<p>Cardiologist</p>	
 					</div>							
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
+
 					<div class="speicality-item text-center">
 						<div class="speicality-img">
 							<img src="{{ url_for('static', filename='assets/img/specialities/specialities-05.png')}}" class="img-fluid" alt="Speciality">
@@ -89,11 +83,9 @@
 						</div>	
 						<p>Dentist</p>
 					</div>							
-					<!-- /Slider Item -->
 					
 				</div>
 				<!-- /Slider -->
-				
 			</div>
 		</div>
 	</div>   
@@ -107,12 +99,12 @@
 			<div class="col-lg-4">
 				<div class="section-header ">
 					<h2>Book Our Doctor</h2>
-					<p>Lorem Ipsum is simply dummy text </p>
+					<p>Connect with highly qualified and experienced doctors for all your health concerns — online or in-person.</p>
 				</div>
 				<div class="about-content">
-					<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum.</p>
-					<p>web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes</p>					
-					<a href="javascript:;">Read More..</a>
+					<p>Whether you need a consultation, follow-up, or second opinion, our platform makes it easy to find and book a doctor who fits your needs.</p>
+					<p>We’re committed to simplifying healthcare access by offering real-time availability, detailed doctor profiles, and patient reviews — helping you make informed choices.</p>					
+					<a href="javascript:;">Learn More</a>
 				</div>
 			</div>
 			<div class="col-lg-8">
@@ -132,7 +124,6 @@
 						<i class="fas fa-star filled"></i>
 						<i class="fas fa-star"></i>
 						<span class="d-inline-block average-rating">(17)</span>
-						<!-- Make dynamic if available -->
 					  </div>
 					  <ul class="available-info">
 						<h5>Available Slots:</h5>
@@ -149,12 +140,11 @@
 						  <a href="#" class="btn view-btn">View Profile</a>
 						</div>
 						<div class="col-6">
-						  <a href="#" class="btn book-btn">Book Now</a>
+						  <a href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=profile.id) }}" class="btn book-btn">Book Now</a>
 						</div>
 					  </div>
 					</div>
 				  </div>
-				  <!-- /Doctor Widget -->
 				  {% endfor %}
 				</div>
 			</div>
@@ -172,51 +162,34 @@
 			</div>
 			<div class="col-md-7">
 				<div class="section-header">	
-					<h2 class="mt-2">Availabe Features in Our Clinic</h2>
-					<p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. </p>
+					<h2 class="mt-2">Powerful Features at Your Fingertips</h2>
+					<p>From appointment booking to digital health records, our platform is designed to offer everything you need for a modern healthcare experience.</p>
 				</div>	
 				<div class="features-slider slider">
-					<!-- Slider Item -->
 					<div class="feature-item text-center">
 						<img src="{{ url_for('static', filename='assets/img/features/feature-01.jpg')}}" class="img-fluid" alt="Feature">
 						<p>Patient Ward</p>
 					</div>
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
 					<div class="feature-item text-center">
 						<img src="{{ url_for('static', filename='assets/img/features/feature-02.jpg')}}" class="img-fluid" alt="Feature">
 						<p>Test Room</p>
 					</div>
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
 					<div class="feature-item text-center">
 						<img src="{{ url_for('static', filename='assets/img/features/feature-03.jpg')}}" class="img-fluid" alt="Feature">
 						<p>ICU</p>
 					</div>
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
 					<div class="feature-item text-center">
-						<img src="{{ url_for('static', filename='assets/img/features/feature-04.jpg" class="img-fluid')}}" alt="Feature">
+						<img src="{{ url_for('static', filename='assets/img/features/feature-04.jpg')}}" class="img-fluid" alt="Feature">
 						<p>Laboratory</p>
 					</div>
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
 					<div class="feature-item text-center">
 						<img src="{{ url_for('static', filename='assets/img/features/feature-05.jpg')}}" class="img-fluid" alt="Feature">
 						<p>Operation</p>
 					</div>
-					<!-- /Slider Item -->
-					
-					<!-- Slider Item -->
 					<div class="feature-item text-center">
 						<img src="{{ url_for('static', filename='assets/img/features/feature-06.jpg')}}" class="img-fluid" alt="Feature">
 						<p>Medical</p>
 					</div>
-					<!-- /Slider Item -->
 				</div>
 			</div>
 	   </div>

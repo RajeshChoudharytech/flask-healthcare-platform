@@ -2,20 +2,23 @@
 {% block title %}Schedule Timing{% endblock %}
 
 {% block content %}
+{% include "message.html" %}
 
-<!-- Page Content -->
-<div class="content">
+<div class="content py-4">
     <div class="container-fluid">
         <div class="row">
-			<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+            <!-- Sidebar -->
+            <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                 {% include('sidebar.html') %}
             </div>
 
-            <div class="col-md-12">
-                <h3>Set Availability</h3>
+            <!-- Main Content -->
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <h3 class="mb-4">Set Availability</h3>
+
                 <form method="POST">
                     {{ form.hidden_tag() }}
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-4">
                             {{ form.date.label(class="form-label") }}
                             {{ form.date(class="form-control") }}
@@ -29,41 +32,29 @@
                             {{ form.end_time(class="form-control") }}
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">{{ form.submit.label.text }}</button>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        {{ form.submit.label.text }}
+                    </button>
                 </form>
 
-                <hr>
+                <hr class="my-4">
 
-                <h4 class="mt-4">Your Weekly Schedule</h4>
+                <h4>Your Availability</h4>
 
-                {% set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
-                <ul class="nav nav-tabs mt-3" id="availabilityTabs" role="tablist">
-                    {% for day in days %}
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link {% if loop.first %}active{% endif %}" id="{{ day }}-tab" data-toggle="tab" href="#{{ day }}" role="tab">{{ day }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                <div class="tab-content mt-3">
-                    {% for day in days %}
-                        <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ day }}" role="tabpanel">
-                            {% set slots = availabilities[day] if day in availabilities else [] %}
-                            {% if slots %}
-                                {% for slot in slots %}
-                                    <div class="doc-slot-list d-flex justify-content-between align-items-center">
-                                        <span>{{ slot.start_time }} - {{ slot.end_time }} on {{ slot.date.strftime('%Y-%m-%d') }}</span>
-                                        <a href="{{ url_for('doctor.delete_availability', slot_id=slot.id) }}" class="text-danger">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            {% else %}
-                                <p class="text-muted">Not Available</p>
-                            {% endif %}
+                {% if availabilities %}
+                    <div class="list-group">
+                        {% for slot in availabilities %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ slot.date.strftime('%A, %d %B %Y') }}</strong><br>
+                                {{ slot.start_time.strftime('%I:%M %p') }} - {{ slot.end_time.strftime('%I:%M %p') }}
+                            </div>
                         </div>
-                    {% endfor %}
-                </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">You have not added any availability slots yet.</p>
+                {% endif %}
             </div>
         </div>
     </div>

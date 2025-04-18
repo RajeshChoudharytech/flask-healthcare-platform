@@ -24,7 +24,7 @@ doctor_bp = Blueprint("doctor", __name__)
 @login_required
 def dashboard():
     if current_user.role != UserRole.doctor:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     today = date.today()
 
@@ -114,12 +114,12 @@ def handle_appointment(appointment_id, action):
 
     """
     if current_user.role != UserRole.doctor:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     appointment = Appointment.query.get_or_404(appointment_id)
 
     if appointment.doctor_id != current_user.id:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     if action == "accept":
         appointment.status = AppointmentStatus.accepted
@@ -212,7 +212,7 @@ def view_appointments():
     Display a list of all appointment requests for the currently logged-in doctor.
     """
     if current_user.role != UserRole.doctor:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     appointments = Appointment.query.filter_by(
         doctor_id=current_user.id,
@@ -228,7 +228,7 @@ def view_patients():
     Display a list of all patients for the currently logged-in doctor.
     """
     if current_user.role != UserRole.doctor:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     patients = (
         User.query

@@ -17,7 +17,7 @@ patient_bp = Blueprint("patient", __name__)
 @login_required
 def search_doctor():
     if current_user.role != UserRole.patient:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     query = request.args.get('query', '').strip().lower()
     doctors = []
@@ -38,7 +38,7 @@ def book_appointment_with_doctor(doctor_id):
     Allow a patient to book an appointment with a specific doctor.
     """
     if current_user.role != UserRole.patient:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     doctor = User.query.filter_by(id=doctor_id, role=UserRole.doctor).first_or_404()
     form = AppointmentForm()
@@ -85,7 +85,7 @@ def my_appointments():
     Display all appointments booked by the patient.
     """
     if current_user.role != UserRole.patient:
-        return "Unauthorized", 403
+        flash("Access denied.", "danger")
 
     appointments = Appointment.query.filter_by(patient_id=current_user.id).all()
     return render_template('patient/my_appointments.html', appointments=appointments)
