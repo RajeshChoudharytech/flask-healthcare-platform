@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import enum
 from datetime import datetime
+from slugify import slugify 
 
 
 class UserRole(enum.Enum):
@@ -54,8 +55,12 @@ class DoctorProfile(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     bio = db.Column(db.Text)
     specialty = db.Column(db.String(100))
-
+    slug = db.Column(db.String(150), unique=True, nullable=True)
     user = db.relationship("User", back_populates="doctor_profile")
+    
+    def generate_slug(self):
+        base_slug = slugify(f"{self.user.username}-{self.user.id}")
+        self.slug = base_slug
 
 
 class AppointmentStatus(enum.Enum):
