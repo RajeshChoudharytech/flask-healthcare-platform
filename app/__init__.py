@@ -4,6 +4,7 @@ from flask_login import LoginManager, current_user
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_login import login_user
+from datetime import datetime
 
 from flask_mail import Mail
 
@@ -35,6 +36,10 @@ def create_app():
     @app.context_processor
     def inject_user():
         return dict(current_user=current_user)
+    
+    @app.context_processor
+    def inject_year():
+        return {'current_year': datetime.now().year}
 
     return app
 

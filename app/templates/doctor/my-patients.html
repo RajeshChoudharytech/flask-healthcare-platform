@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}My Patients{% endblock %}
+{% block content %}
+
+<div class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                {% include('sidebar.html') %}
+            </div>
+
+			<div class="col-md-7 col-lg-8 col-xl-9">
+				<div class="row row-grid">
+					{% for patient in patients %}
+					<div class="col-md-6 col-lg-4 col-xl-3">
+						<div class="card widget-profile pat-widget-profile">
+							<div class="card-body">
+								<div class="pro-widget-content">
+									<div class="profile-info-widget">
+										<a href="#" class="booking-doc-img">
+											<img src="{{ url_for('static', filename='assets/img/features/feature-06.jpg')}}" alt="User Image">
+										</a>
+										<div class="profile-det-info">
+											<h3>{{ patient.username }}</h3>
+											<div class="patient-details">
+												<h5><b>Patient ID :</b> {{ patient.id }}</h5>
+												<h5 class="mb-0"><i class="fas fa-email"></i> {{ patient.email }}</h5>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Appointment List{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                {% include('sidebar.html') %}
+            </div>
+            
+            <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="appointments">
+                    {% for appointment in appointments %}
+                    <div class="appointment-list">
+                        <div class="profile-info-widget">
+                            <a href="#" class="booking-doc-img">
+                                <img src="{{ url_for('static', filename='assets/img/patients/patient.jpg') }}" alt="User Image">
+                            </a>
+                            <div class="profile-det-info">
+                                <h3>{{appointment.patient.username}}</h3>
+                                <div class="patient-details">
+                                    <h5><i class="fas fa-envelope"></i> {{appointment.patient.email}}</h5>
+                                    <h5><i class="far fa-clock"></i> {{ appointment.appointment_time.strftime('%d %b %Y, %I:%M %p') }}</h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="appointment-action">
+                            <a href="#" class="btn btn-sm bg-success-light">
+                                <i class="fas fa-check"></i> Accept
+                            </a>
+                            <a href="#" class="btn btn-sm bg-danger-light">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>No appointments available.</p>
+                    {% endfor %}                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

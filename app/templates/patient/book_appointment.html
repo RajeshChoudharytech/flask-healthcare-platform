@@ -1,37 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }}">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="mb-4">Book Appointment with <strong>Dr. {{ doctor.username }}</strong></h3>
 
-    <h2>Book Appointment with Dr. {{ doctor.username }}</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
 
-<form method="POST">
-    {{ form.hidden_tag() }}
+                <div class="form-group mb-3">
+                    {{ form.appointment_time.label(class="form-label") }}
+                    {{ form.appointment_time(class="form-control") }}
+                </div>
 
-    <div>
-        {{ form.appointment_time.label }}<br>
-        {{ form.appointment_time(size=32) }}
+                <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+            </form>
+        </div>
     </div>
-
-    <div>
-        {{ form.submit() }}
-    </div>
-</form>
-
-
-</body>
-</html>
+</div>
+{% endblock %}

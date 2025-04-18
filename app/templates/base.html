@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{% block title %}Doccure{% endblock %}</title>
+
+    <!-- SEO & Accessibility -->
+    <meta name="description" content="Doccure - Connect patients and doctors quickly, securely, and conveniently.">
+    <meta name="keywords" content="healthcare, doctor booking, appointments, doccure">
+    <meta property="og:title" content="Doccure">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/img/logo.png') }}">
+    <meta name="author" content="Doccure Team">
+
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="no-referrer-when-downgrade">
+
+    <!-- Favicons -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/img/favicon.png') }}" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/bootstrap.min.css', v='1.0.0') }}">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/fontawesome/css/fontawesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/plugins/fontawesome/css/all.min.css') }}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css', v='1.0.0') }}">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar navbar-expand-lg header-nav">
+                <div class="navbar-header">
+                    <a id="mobile_btn" href="javascript:void(0);">
+                        <span class="bar-icon">
+                            <span></span><span></span><span></span>
+                        </span>
+                    </a>
+                    <a href="{{ url_for('auth.home') }}" class="navbar-brand logo">
+                        <img src="{{ url_for('static', filename='assets/img/logo.png') }}" class="img-fluid" alt="Logo">
+                    </a>
+                </div>
+                <div class="main-menu-wrapper">
+                    <div class="menu-header">
+                        <a href="{{ url_for('auth.home') }}" class="menu-logo">
+                            <img src="{{ url_for('static', filename='assets/img/logo.png') }}" class="img-fluid" alt="Logo">
+                        </a>
+                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </div>
+                    {% if current_user.is_authenticated %}
+                    <ul class="main-nav">
+                        <li class="active"><a href="{{ url_for('auth.home') }}">Home</a></li>
+
+                        {% if current_user.role.value == 'doctor' %}
+                        <li class="has-submenu">
+                            <a href="#">Doctors <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="{{ url_for('doctor.dashboard') }}">Doctor Dashboard</a></li>
+                                <li><a href="{{ url_for('doctor.view_appointments') }}">Appointments</a></li>
+                                <li><a href="{{ url_for('doctor.manage_availability') }}">Schedule Timing</a></li>
+                                <li><a href="{{ url_for('doctor.view_patients') }}">Patients List</a></li>
+                                <li><a href="{{ url_for('doctor.manage_profile') }}">Profile Settings</a></li>
+                                
+                            </ul>
+                        </li>
+                        {% else %}
+                        <li class="has-submenu">
+                            <a href="#">Patients <i class="fas fa-chevron-down"></i></a>
+                            <ul class="submenu">
+                                <li><a href="{{ url_for('patient.search_doctor') }}">Search Doctor</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+                </div>
+
+                <ul class="nav header-navbar-rht">
+                    <li class="nav-item contact-item">
+                        <div class="header-contact-img"><i class="far fa-hospital"></i></div>
+                        <div class="header-contact-detail">
+                            <p class="contact-header">Contact</p>
+                            <p class="contact-info-header">+1 315 369 5943</p>
+                        </div>
+                    </li>
+
+                    {% if not current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link header-login" href="{{ url_for('auth.login') }}">Login / Signup</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+        <!-- /Header -->
+
+        {% block content %}{% endblock %}
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-top">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <!-- About -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="footer-widget footer-about">
+                                <div class="footer-logo mb-2">
+                                    <img src="{{ url_for('static', filename='assets/img/footer-logo.png') }}" alt="Footer Logo">
+                                </div>
+                                <p>We connect patients and doctors in a fast, reliable, and secure way.</p>
+                            </div>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="footer-widget footer-menu">
+                                <h2 class="footer-title">Quick Links</h2>
+                                <ul>
+                                    <li><a href="{{ url_for('auth.home') }}">Home</a></li>
+                                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="footer-widget footer-contact">
+                                <h2 class="footer-title">Contact Us</h2>
+                                <p><i class="fas fa-map-marker-alt"></i> 3556 Beech Street, San Francisco, CA 94108</p>
+                                <p><i class="fas fa-phone-alt"></i> +1 315 369 5943</p>
+                                <p><i class="fas fa-envelope"></i> support@doccure.com</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom text-center py-3">
+                <p class="mb-0">&copy; {{ current_year }} Doccure. All rights reserved.</p>
+            </div>
+        </footer>
+        <!-- /Footer -->
+
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- JavaScript Files -->
+    <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='assets/js/popper.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='assets/js/slick.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='assets/js/script.js') }}" defer></script>
+
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

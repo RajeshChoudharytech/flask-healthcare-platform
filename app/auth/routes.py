@@ -1,14 +1,11 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user
 from app import db
-from app.models import User, UserRole
+from app.models import User, DoctorProfile
 from flask import Blueprint
-from werkzeug.security import check_password_hash
-
 
 auth_bp = Blueprint('auth', __name__)
 
-# Registration route
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     """
@@ -39,8 +36,6 @@ def register():
     return render_template('auth/register.html')
 
 
-# Login route
-
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     """
@@ -65,7 +60,6 @@ def login():
     return render_template('auth/login.html')
 
 
-# Logout route
 @auth_bp.route('/logout')
 @login_required
 def logout():
@@ -79,7 +73,9 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
-
 @auth_bp.route('/')
 def home():
-    return render_template('dash/index-2.html')
+    doctors = (
+        DoctorProfile.query.all()
+    )
+    return render_template('auth/index-2.html', doctors=doctors)

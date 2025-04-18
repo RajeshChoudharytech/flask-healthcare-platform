@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Schedule Timing{% endblock %}
+
+{% block content %}
+
+<!-- Page Content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+			<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                {% include('sidebar.html') %}
+            </div>
+
+            <div class="col-md-12">
+                <h3>Set Availability</h3>
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ form.date.label(class="form-label") }}
+                            {{ form.date(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.start_time.label(class="form-label") }}
+                            {{ form.start_time(class="form-control") }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ form.end_time.label(class="form-label") }}
+                            {{ form.end_time(class="form-control") }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">{{ form.submit.label.text }}</button>
+                </form>
+
+                <hr>
+
+                <h4 class="mt-4">Your Weekly Schedule</h4>
+
+                {% set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+                <ul class="nav nav-tabs mt-3" id="availabilityTabs" role="tablist">
+                    {% for day in days %}
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link {% if loop.first %}active{% endif %}" id="{{ day }}-tab" data-toggle="tab" href="#{{ day }}" role="tab">{{ day }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content mt-3">
+                    {% for day in days %}
+                        <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="{{ day }}" role="tabpanel">
+                            {% set slots = availabilities[day] if day in availabilities else [] %}
+                            {% if slots %}
+                                {% for slot in slots %}
+                                    <div class="doc-slot-list d-flex justify-content-between align-items-center">
+                                        <span>{{ slot.start_time }} - {{ slot.end_time }} on {{ slot.date.strftime('%Y-%m-%d') }}</span>
+                                        <a href="{{ url_for('doctor.delete_availability', slot_id=slot.id) }}" class="text-danger">
+                                            <i class="fa fa-times"></i>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-muted">Not Available</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

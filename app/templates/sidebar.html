@@ -1,0 +1,58 @@
+<!-- sidebar.html -->
+
+{% if current_user.role.value == 'doctor' %}
+<div class="profile-sidebar">
+	<!-- Profile Summary -->
+	<div class="widget-profile pro-widget-content">
+		<div class="profile-info-widget">
+			<a href="#" class="booking-doc-img">
+				<img src="{{ url_for('static', filename='assets/img/doctors/doctor-thumb-02.jpg') }}" alt="User Image">
+			</a>
+			<div class="profile-det-info">
+				<h3>Dr. {{current_user.username}}</h3>
+				<div class="patient-details">
+					<h5 class="mb-0">{{current_user.doctor_profile.bio}}  {{ current_user.doctor_profile.specialty }}</h5>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Sidebar Menu -->
+	<div class="dashboard-widget">
+		<nav class="dashboard-menu">
+			<ul>
+				<li class="{% if request.endpoint == 'doctor.dashboard' %}active{% endif %}">
+					<a href="{{ url_for('doctor.dashboard') }}">
+						<i class="fas fa-columns"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+				<li>
+					<a href="{{ url_for('doctor.view_appointments') }}">
+						<i class="fas fa-calendar-check"></i>
+						<span>Appointments</span>
+					</a>
+				</li>
+				<li>
+					<a href="{{ url_for('doctor.view_patients') }}">
+						<i class="fas fa-user-injured"></i>
+						<span>My Patients</span>
+					</a>
+				</li>
+				<li>
+					<a href="{{ url_for('doctor.manage_availability') }}">
+						<i class="fas fa-hourglass-start"></i>
+						<span>Schedule Timings</span>
+					</a>
+				</li>
+				<li>
+					<a href="{{ url_for('doctor.manage_profile') }}">
+						<i class="fas fa-user-cog"></i>
+						<span>Profile Settings</span>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+{% endif %}

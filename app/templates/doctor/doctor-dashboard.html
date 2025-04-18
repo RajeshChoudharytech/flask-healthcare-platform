@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<!-- Page Content -->
+	<div class="content">
+		<div class="container-fluid">
+
+			<div class="row">
+				<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+					
+					{% include "sidebar.html" %}
+					
+				</div>
+				
+				<div class="col-md-7 col-lg-8 col-xl-9">
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card dash-card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-12 col-lg-4">
+											<div class="dash-widget dct-border-rht">
+												<div class="circle-bar circle-bar1">
+													<div class="circle-graph1" data-percent="75">
+														<img src="{{ url_for('static', filename='assets/img/icon-01.png')}}" class="img-fluid" alt="patient">
+													</div>
+												</div>
+												<div class="dash-widget-info">
+													<h6>Total Patient</h6>
+													<h3>{{total_patients}}</h3>
+													<p class="text-muted">Till Today</p>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-md-12 col-lg-4">
+											<div class="dash-widget dct-border-rht">
+												<div class="circle-bar circle-bar2">
+													<div class="circle-graph2" data-percent="65">
+														<img src="{{ url_for('static', filename='assets/img/icon-02.png')}}" class="img-fluid" alt="Patient">
+													</div>
+												</div>
+												<div class="dash-widget-info">
+													<h6>Today Patient</h6>
+													<h3>{{todays_patients}}</h3>
+													<p class="text-muted">{{today_date}}</p>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-md-12 col-lg-4">
+											<div class="dash-widget">
+												<div class="circle-bar circle-bar3">
+													<div class="circle-graph3" data-percent="50">
+														<img src="{{ url_for('static', filename='assets/img/icon-03.png')}}" class="img-fluid" alt="Patient">
+													</div>
+												</div>
+												<div class="dash-widget-info">
+													<h6>Appoinments</h6>
+													<h3>{{total_appointments}}</h3>
+													<p class="text-muted">{{today_date}}</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12">
+							<h4 class="mb-4">Patient Appoinment</h4>
+							<div class="appointment-tab">
+							
+								<!-- Appointment Tab -->
+								<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+									<li class="nav-item">
+										<a class="nav-link {% if active_section == 'upcoming' %}active{% endif %}" href="#upcoming-appointments" data-toggle="tab">Upcoming</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link {% if active_section == 'today' %}active{% endif %}" href="#today-appointments" data-toggle="tab">Today</a>
+									</li> 
+								</ul>
+								<!-- /Appointment Tab -->
+								
+								<div class="tab-content">
+								
+									<!-- Upcoming Appointment Tab -->
+									<div class="tab-pane show active" id="upcoming-appointments">
+										<div class="card card-table mb-0">
+											<div class="card-body">
+												<div class="table-responsive">
+													<table class="table table-hover table-center mb-0">
+														<thead>
+															<tr>
+																<th>Patient Name</th>
+																<th>Appt. Date</th>
+																
+																<th></th>
+															</tr>
+														</thead>
+														<tbody>
+															{% for appt in upcoming_appointments %}
+															<tr>
+															  <td>
+																<h2 class="table-avatar">
+														
+																  <a href="#">{{ appt.patient.username }} <span>#PT{{ appt.patient.id }}</span></a>
+																</h2>
+															  </td>
+															  <td>
+																{{ appt.appointment_time.strftime('%d %b %Y') }}
+																<span class="d-block text-info">{{ appt.appointment_time.strftime('%I:%M %p') }}</span>
+															  </td>
+															  <td class="text-right">
+																<div class="table-action">
+																
+																{% if appt.status.value == 'Pending' %}
+																	<a href="{{ url_for('doctor.handle_appointment', appointment_id=appt.id, action='accept', section='upcoming') }}" class="btn btn-success btn-sm">Accept</a>
+																	<a href="{{ url_for('doctor.handle_appointment', appointment_id=appt.id, action='reject', section='upcoming') }}" class="btn btn-danger btn-sm">Cancel</a>
+																{% elif appt.status.value == 'Accepted' %}
+																	<span class="badge bg-success">Accepted</span>
+																{% elif appt.status.value == 'Rejected' %}
+																	<span class="badge bg-danger">Rejected</span>
+																{% endif %}
+
+																</div>
+															  </td>
+															</tr>
+															{% else %}
+															<tr><td colspan="3">No upcoming appointments</td></tr>
+															{% endfor %}
+														  </tbody>
+													</table>		
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- /Upcoming Appointment Tab -->
+							   
+									<!-- Today Appointment Tab -->
+									<div class="tab-pane" id="today-appointments">
+										<div class="card card-table mb-0">
+											<div class="card-body">
+												<div class="table-responsive">
+													<table class="table table-hover table-center mb-0">
+														<thead>
+															<tr>
+																<th>Patient Name</th>
+																<th>Appt. Date</th>
+																<th></th>
+															</tr>
+														</thead>
+														<tbody>
+															{% for appt in todays_appointments %}
+															<tr>
+															  <td>
+																<h2 class="table-avatar">
+																  
+																  <a href="#">{{ appt.patient.username }} <span>#PT{{ appt.patient.id }}</span></a>
+																</h2>
+															  </td>
+															  <td>
+																{{ appt.appointment_time.strftime('%d %b %Y') }}
+																<span class="d-block text-info">{{ appt.appointment_time.strftime('%I:%M %p') }}</span>
+															  </td>
+															  <td class="text-right">
+																<div class="table-action">
+																
+																{% if appt.status.value == 'Pending' %}
+																	<a href="{{ url_for('doctor.handle_appointment', appointment_id=appt.id, action='accept', section='today') }}" class="btn btn-success btn-sm">Accept</a>
+																	<a href="{{ url_for('doctor.handle_appointment', appointment_id=appt.id, action='reject', section='today') }}" class="btn btn-danger btn-sm">Cancel</a>
+																{% elif appt.status.value == 'Accepted' %}
+																	<span class="badge bg-success">Accepted</span>
+																{% elif appt.status.value == 'Rejected' %}
+																	<span class="badge bg-danger">Rejected</span>
+																{% endif %}
+																</div>
+															  </td>
+															</tr>
+															{% else %}
+															<tr><td colspan="6">No appointments for today</td></tr>
+															{% endfor %}
+														  </tbody>
+														  
+													</table>		
+												</div>	
+											</div>	
+										</div>	
+									</div>
+									<!-- /Today Appointment Tab -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>		
+	<!-- /Page Content -->
+	
+	{% endblock content %}
+    {% block scripts %}
+		<!-- jQuery -->
+		<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='assets/js/popper.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='assets/js/bootstrap.min.js') }}"></script>
+		
+		<!-- Sticky Sidebar JS -->
+        <script src="{{ url_for('static', filename='assets/plugins/theia-sticky-sidebar/ResizeSensor.js')}}"></script>
+        <script src="{{ url_for('static', filename='assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js')}}"></script>
+		
+		<!-- Circle Progress JS -->
+		<script src="{{ url_for('static', filename='assets/js/circle-progress.min.js')}}"></script>
+		
+		<!-- Custom JS -->
+		<script src="{{ url_for('static', filename='assets/js/script.js')}}"></script>
+
+		<script>
+			document.addEventListener("DOMContentLoaded", function () {
+				const urlParams = new URLSearchParams(window.location.search);
+				const section = urlParams.get('section');
+		
+				if (section === 'today') {
+					const tabTrigger = document.querySelector('a[href="#today-appointments"]');
+					if (tabTrigger) {
+						new bootstrap.Tab(tabTrigger).show();
+					}
+				} else if (section === 'upcoming') {
+					const tabTrigger = document.querySelector('a[href="#upcoming-appointments"]');
+					if (tabTrigger) {
+						new bootstrap.Tab(tabTrigger).show();
+					}
+				}
+			});
+		</script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Search Doctor{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Search Results{% if query %} for "{{ query }}"{% endif %}</h3>
+
+    {% if doctors %}
+        {% for doctor in doctors %}
+            <!-- Doctor Widget -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="doctor-widget">
+                        <div class="doc-info-left d-flex">
+                            <div class="doctor-img me-3">
+                                <a href="#">
+                                    <img src="{{ url_for('static', filename='assets/img/features/feature-06.jpg')}}"
+                                         class="img-fluid" alt="Doctor Image" style="width:100px; height:100px;">
+                                </a>
+                            </div>
+                            <div class="doc-info-cont">
+                                <h4 class="doc-name">
+                                    <a href="#">{{ doctor.username }}</a>
+                                </h4>
+                                <p class="doc-speciality">
+                                    {{ doctor.doctor_profile.specialty if doctor.doctor_profile else "N/A" }}
+                                </p>
+                                <div class="clinic-details">
+                                    <p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{ doctor.doctor_profile.location if doctor.doctor_profile else "N/A" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="doc-info-right text-end">
+                            <div class="clini-infos">
+                                <ul>
+                                    <li><i class="far fa-thumbs-up"></i> 95%</li>
+                                    <li><i class="far fa-comment"></i> 12 Feedback</li>
+                                    <li><i class="far fa-money-bill-alt"></i> $100 - $300</li>
+                                </ul>
+                            </div>
+                            <div class="clinic-booking mt-2">
+                                <a class="view-pro-btn" href="#">View Profile</a>
+                                <a class="apt-btn" href="{{ url_for('patient.book_appointment_with_doctor', doctor_id=doctor.id) }}">Book Appointment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Doctor Widget -->
+        {% endfor %}
+    {% else %}
+        <p>No doctors found matching your search.</p>
+    {% endif %}
+</div>
+{% endblock %}
